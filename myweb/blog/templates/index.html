@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al-Zakah</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- CSS part -->
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .header {
+            position: fixed;
+            height: 80px;
+            width: 100%;
+            z-index: 100;
+            padding: 0 20px;
+            background-color: rgb(8, 169, 116);
+
+        }
+
+        .nav {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .nav,
+        .nav_item {
+            display: flex;
+            height: 100%;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav_logo,
+        .nav_link,
+        .button {
+            color: #fff;
+        }
+
+        .nav_logo {
+            font-size: 25px;
+        }
+
+        .nav_item {
+            column-gap: 25px;
+        }
+
+        .nav_link:hover {
+            color: #d9d9d9;
+        }
+
+        .button {
+            padding: 6px 24px;
+            border: 2px solid #fff;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .button:active {
+            transform: scale(0.98);
+        }
+
+        /* Home */
+        .home {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            background-color: rgb(202, 224, 216);
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Form */
+        .form_container {
+            position: absolute;
+            max-width: 320px;
+            width: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1.2);
+            z-index: 101;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .home.show .form_container {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+
+        .signup_form {
+            display: none;
+        }
+
+        .form_close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: #0b0217;
+            font-size: 22px;
+            opacity: 0.7;
+            cursor: pointer;
+            z-index: 102;
+        }
+
+        .form_container h2 {
+            font-size: 22px;
+            color: #0b0217;
+            text-align: center;
+        }
+
+        .input_box {
+            position: relative;
+            margin-top: 30px;
+            width: 100%;
+            height: 40px;
+        }
+
+        .input_box input {
+            height: 100%;
+            width: 100%;
+            border: none;
+            outline: none;
+            padding: 0 30px;
+            color: #333;
+            transition: all 0.2s ease;
+            border-bottom: 1.5px solid #aaaaaa;
+        }
+
+        .input_box i {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: #707070;
+        }
+
+        .input_box i.email,
+        .input_box i.password {
+            left: 0;
+        }
+
+        .input_box input:focus~i.email,
+        .input_box input:focus~i.pw_hide {
+            color: #11945f;
+        }
+
+        .input_box i.pw_hide {
+            right: 0;
+            font-size: 18px;
+        }
+
+        .option_field {
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .form_container a {
+            color: #0e935e;
+            font-size: 12px;
+        }
+
+        .form_container a:hover {
+            text-decoration: underline;
+        }
+
+        .checkbox {
+            display: flex;
+            column-gap: 8px;
+            white-space: nowrap;
+        }
+
+        .checkbox input {
+            accent-color: #0c8e5a;
+        }
+
+        .checkbox label {
+            font-size: 12px;
+            cursor: pointer;
+            user-select: none;
+            color: #0b0217;
+        }
+
+        .form_container .button {
+            background: #0b7249;
+            margin-top: 30px;
+            width: 100%;
+            padding: 10px 0;
+            border-radius: 10px;
+        }
+
+        .login_signup {
+            font-size: 12px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        /* zakah form */
+        .zakah-form-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 320px;
+            width: 100%;
+            z-index: 101;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            pointer-events: none;
+            text-align: center;
+        }
+
+        .home.show .zakah-form-container {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%);
+        }
+
+
+        /* Information Page styles */
+        .information {
+            background-color: #f7f7f7;
+            padding: 40px;
+        }
+
+        .information-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .information h2 {
+            font-size: 24px;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .information p {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #666;
+        }
+
+        /* Contact Page Styles */
+        .contact {
+            padding: 40px;
+        }
+
+        .contact h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .contact hr {
+            margin: 20px 0;
+            border: none;
+            border-top: 1px solid #ddd;
+        }
+
+        .contact p {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <a href="#" class="nav_logo">Al-Zakah</a>
+
+            <ul class="nav_item">
+                <li class="nav_item">
+                    <a href="#" class="nav_link">Home</a>
+                    <a href="#" class="nav_link">About</a>
+                    <a href="#" class="nav_link">Information</a>
+                    <a href="#" class="nav_link">Contact</a>
+                </li>
+            </ul>
+
+            <button class="button" id="form-open">Login</button>
+        </nav>
+    </header>
+
+    <!--Home-->
+    <section class="home">
+        <div class="form_container">
+            <i class="form_close">x</i>
+            <!--Login form-->
+            <div class="form login_form">
+                <form action="#">
+                    <h2>Login</h2>
+
+                    <div class="input_box">
+                        <input type="email" placeholder="Enter your email" required />
+                        <i class="fas fa-envelope email"></i>
+                    </div>
+                    <div class="input_box">
+                        <i class="fas fa-lock password_icon"></i>
+                        <input type="password" placeholder="Enter your password" required class="password_input" />
+                    </div>
+
+
+                    <div class="option_field">
+                        <span class="checkbox">
+                            <input type="checkbox" id="check">
+                            <label for="check">Remember me</label>
+                        </span>
+                        <a href="#" class="forgot_pw">Forgot password?</a>
+                    </div>
+
+                    <button class="button">Login Now</button>
+
+                    <div class="login_signup">Don't have an account? <a href="#" id="signup">Signup</a></div>
+                </form>
+            </div>
+
+            <!-- sign up form -->
+            <div class="form signup_form">
+                <form action="#">
+                    <h2>SignUp</h2>
+
+                    <div class="input_box">
+                        <input type="email" placeholder="Enter your email" required />
+                        <i class="uil uil-envelope-alt email"></i>
+                    </div>
+                    <div class="input_box">
+                        <input type="password" placeholder="Create password" required />
+                        <i class="uil uil-lock password"></i>
+                        <i class="uil uil-eye-slash pw_hide"></i>
+                    </div>
+                    <div class="input_box">
+                        <input type="password" placeholder="Confirm password" required />
+                        <i class="uil uil-lock password"></i>
+                        <i class="uil uil-eye-slash pw_hide"></i>
+                    </div>
+
+                    <button class="button">Signup Now</button>
+
+                    <div class="login_signup">Already Have an account? <a href="#" id="login">Sign Up</a></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Zakah calculating -->
+        <div class="zakah-form-container">
+            <form id="zakahForm">
+                <label for="money">Money (in your currency):</label>
+                <input type="number" id="money" name="money" min="0" step="0.01">
+                <br>
+        
+                <label for="gold">Gold (in grams):</label>
+                <input type="number" id="gold" name="gold" min="0" step="0.01">
+                <br>
+        
+                <label for="silver">Silver (in grams):</label>
+                <input type="number" id="silver" name="silver" min="0" step="0.01">
+                <br>
+        
+                <button type="button" id="calculateButton">Calculate Zakah</button>
+            </form>
+        
+            <div id="result"></div>
+        </div>
+
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+
+    </section>
+
+    <!-- Information Section -->
+    <section id="information" class="information">
+        <h2>What is Zakah?</h2>
+        <p>Zakah is a special way Muslims help others in need. It's one of the Five Pillars of Islam, which are like
+            the most important rules. Zakah is like sharing your blessings with others.</p>
+
+        <h2>Why is Zakah Important?</h2>
+        <p>Zakah helps keep our wealth pure and reminds us to be grateful for what we have. It's a duty for those
+            who can afford it, and it's also about fairness. By giving Zakah, we help people who are struggling.</p>
+
+        <h2>How to Give Zakah?</h2>
+        <p>To give Zakah, you need to know how much money, gold, or other valuable things you have. Then, you
+            calculate a small part of it (usually 2.5%) to give to those in need. You can give it to people who are
+            poor, in debt, or facing hard times. Leaders in your community can guide you on how to do this.</p>
+
+        <h2>Use Our Zakah Calculator</h2>
+        <p>Our Zakah calculator makes it easy to figure out if you should give Zakah and how much to give. Just tell
+            us about your money and things you own, and we'll help you find the right amount. It's a simple way to
+            make a big difference.</p>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact">
+        <article>
+            <h2>My Contact</h2>
+            <hr>
+            <p> <b>Phone number:</b> &nbsp; 063-170xxxx</p>
+            <p> <b>Email:</b> &nbsp; ug642437001@ftu.ac.th</p>
+            <p> <b>Linkedin: &nbsp; <a href="https://www.linkedin.com/in/aminah-che-soh-056156289/">click here!</a></b>
+            </p>
+        </article>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <p>&copy; 2023 Cal for Zakah.</p>
+    </footer>
+
+    <!-- Javascript part -->
+    <script>const formOpenBtn = document.querySelector("#form-open");
+           const formOpenBtn = document.querySelector("#form-open");
+    const home = document.querySelector(".home");
+    const formContainer = document.querySelector(".form_container");
+    const formCloseBtn = document.querySelector(".form_close");
+    const signupBtn = document.querySelector("#signup");
+    const loginBtn = document.querySelector("#login");
+    const pwShowHide = document.querySelectorAll(".pw_hide");
+    const zakahFormContainer = document.querySelector(".zakah-form-container");
+
+    formOpenBtn.addEventListener("click", () => {
+        home.classList.add("show");
+        zakahFormContainer.style.opacity = "1";
+        zakahFormContainer.style.pointerEvents = "auto";
+    });
+
+    formCloseBtn.addEventListener("click", () => {
+        home.classList.remove("show");
+        zakahFormContainer.style.opacity = "0";
+        zakahFormContainer.style.pointerEvents = "none";
+    });
+    </script>
+
+</body>
+
+</html>
